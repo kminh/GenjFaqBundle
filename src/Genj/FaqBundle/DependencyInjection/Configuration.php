@@ -23,6 +23,15 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->arrayNode('persistence')
+                    ->children()
+                        ->arrayNode('admin')
+                            ->children()
+                                ->scalarNode('dashboard_group')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
                 ->booleanNode('select_first_category_by_default')->defaultFalse()->end()
                 ->booleanNode('select_first_question_by_default')->defaultFalse()->end()
             ->end();
