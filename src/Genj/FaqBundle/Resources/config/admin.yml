@@ -1,12 +1,12 @@
 parameters:
     genj_faq.admin.question_admin.class: Genj\FaqBundle\Admin\QuestionAdmin
-    genj_faq.admin.question_admin.dashboard_group: 'dashboard.faq'
+    genj_faq.admin.question_admin.dashboard_group: 'dashboard.plugins'
 
 services:
     sonata.admin.genj_faq_question:
         class: %genj_faq.admin.question_admin.class%
         tags:
-            - { name: sonata.admin, manager_type: orm, group: %genj_faq.admin.question_admin.dashboard_group%, label: "FAQ" }
+            - { name: sonata.admin, manager_type: orm, group: %genj_faq.admin.question_admin.dashboard_group%, label: "FAQ", label_catalogue: 'GenjFaqBundle' }
         arguments:
             - ~
             - %genj_faq.entity.question.class%
