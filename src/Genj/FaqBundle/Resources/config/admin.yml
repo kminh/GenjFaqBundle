@@ -1,13 +1,38 @@
 parameters:
     genj_faq.admin.question_admin.class: Genj\FaqBundle\Admin\QuestionAdmin
-    genj_faq.admin.question_admin.dashboard_group: 'dashboard.plugins'
+    genj_faq.admin.category_admin.class: Genj\FaqBundle\Admin\CategoryAdmin
+    genj_faq.admin.dashboard_group: 'dashboard.plugins'
+    genj_faq.controller.faq.class: Genj\FaqBundle\Controller\FaqController
+    genj_faq.twig.extension.content.class: Genj\FaqBundle\Twig\Extension\ContentExtension
 
 services:
+    # admin services
     sonata.admin.genj_faq_question:
         class: %genj_faq.admin.question_admin.class%
         tags:
-            - { name: sonata.admin, manager_type: orm, group: %genj_faq.admin.question_admin.dashboard_group%, label: "FAQ", label_catalogue: 'GenjFaqBundle' }
+            - { name: sonata.admin, manager_type: orm, group: %genj_faq.admin.dashboard_group%, label: "FAQ", label_catalogue: 'GenjFaqBundle' }
         arguments:
             - ~
             - %genj_faq.entity.question.class%
             - ~
+    sonata.admin.genj_faq_category:
+        class: %genj_faq.admin.category_admin.class%
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: %genj_faq.admin.dashboard_group%, label: "FAQ Category", label_catalogue: 'GenjFaqBundle' }
+        arguments:
+            - ~
+            - %genj_faq.entity.category.class%
+            - ~
+
+    # controller services
+    genj_faq.controller.faq:
+        class: %genj_faq.controller.faq.class%
+        calls:
+            - [ setContainer, [@service_container] ]
+
+    # twig services
+    genj_faq.twig.extension.content:
+        class: %genj_faq.twig.extension.content.class%
+        arguments: [ @genj_faq.controller.faq, @translator ]
+        tags:
+            - { name: twig.extension }

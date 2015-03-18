@@ -7,6 +7,8 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
+use Genj\FaqBundle\Entity\Category;
+
 /**
  * Class QuestionAdmin
  *
@@ -42,7 +44,7 @@ class QuestionAdmin extends Admin
         $listMapper
             ->addIdentifier('id')
             ->add('headline', null, array('identifier' => true))
-            ->add('Category')
+            ->add('category')
             ->add('rank')
             ->add('_action', 'actions',
                 array(
@@ -61,17 +63,17 @@ class QuestionAdmin extends Admin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->with('Basics', array('position' => 'left'))
+            ->with('Basics', array('class' => 'col-md-8'))
             ->add('headline', null, array('attr' => array('class' => 'span12')))
             ->add('body', 'ckeditor', array('required' => false, 'attr' => array('class' => 'span12')))
             ->end()
 
-            ->with('Status', array('position' => 'right'))
-            ->add('category', null, array(
+            ->with('Status', array('class' => 'col-md-4'))
+            ->add('category', 'sonata_type_model', array(
                     'expanded' => true,
                     'required' => true,
                     'attr' => array('class' => 'radio-list vertical')
-                ))
+            ))
             ->add('rank', null, array('required' => false, 'attr' => array('class' => 'span12')))
             ->add('slug', null, array('required' => false, 'attr' => array('class' => 'span12')))
             ->end();

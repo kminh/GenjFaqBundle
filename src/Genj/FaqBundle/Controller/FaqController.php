@@ -72,9 +72,9 @@ class FaqController extends Controller
             $categories = $this->getCategoryRepository()->retrieveActive();
         }
 
-        if (!$categories) {
-            throw $this->createNotFoundException('Faq category not found');
-        }
+        /* if (!$categories) { */
+        /*     throw $this->createNotFoundException('Faq category not found'); */
+        /* } */
 
         return $this->render(
             'GenjFaqBundle:Faq:index_without_collapse.html.twig',
