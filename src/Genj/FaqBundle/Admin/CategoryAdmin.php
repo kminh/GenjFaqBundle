@@ -34,7 +34,7 @@ class CategoryAdmin extends Admin
 
         $formMapper
             ->with('Status')
-                ->add('isActive')
+                ->add('isActive', 'checkbox', ['required' => false])
             ->end()
             ->remove('category')
         ;

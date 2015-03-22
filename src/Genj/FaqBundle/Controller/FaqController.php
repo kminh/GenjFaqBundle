@@ -60,11 +60,12 @@ class FaqController extends Controller
      * Index without any collapsing. Will just show all categories and questions at once.
      *
      * @param string $categorySlug
+     * @param bool $displayTitle
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexWithoutCollapseAction($categorySlug)
+    public function indexWithoutCollapseAction($categorySlug, $displayTitle = true)
     {
         if ($categorySlug) {
             $categories = $this->getCategoryRepository()->retrieveActiveBySlug($categorySlug);
@@ -80,7 +81,8 @@ class FaqController extends Controller
             'GenjFaqBundle:Faq:index_without_collapse.html.twig',
             array(
                 'categories'   => $categories,
-                'categorySlug' => $categorySlug
+                'categorySlug' => $categorySlug,
+                'displayTitle' => true
             )
         );
     }

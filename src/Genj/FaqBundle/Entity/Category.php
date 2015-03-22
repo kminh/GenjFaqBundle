@@ -161,7 +161,7 @@ class Category
      */
     public function setIsActive($isActive)
     {
-        $this->isActive = $isActive;
+        $this->isActive = is_null($isActive) ? false : $isActive;
 
         return $this;
     }

@@ -40,10 +40,10 @@ class ContentExtension extends \Twig_Extension
         );
     }
 
-    public function getFaqs($categorySlug = null)
+    public function getFaqs($categorySlug = null, $displayTitle = true)
     {
         try {
-            $response = $this->controller->indexWithoutCollapseAction($categorySlug);
+            $response = $this->controller->indexWithoutCollapseAction($categorySlug, $displayTitle);
             return $response->getContent();
         } catch (\Exception $e) {
             return $this->translator->trans($e->getMessage());
