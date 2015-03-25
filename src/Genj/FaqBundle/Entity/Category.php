@@ -279,7 +279,18 @@ class Category
      */
     public function getQuestions()
     {
-        return $this->questions;
+        $questions = $this->questions->toArray();
+
+        // sort questions based on ranks
+        usort($questions, function(Question $a, Question $b) {
+            if ($a->hasSameRankAs($b)) {
+                return 0;
+            }
+
+            return $a->getRank() < $b->getRank() ? -1 : 1;
+        });
+
+        return $questions;
     }
 
 

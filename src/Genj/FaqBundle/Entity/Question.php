@@ -24,6 +24,7 @@ class Question
     protected $id;
 
     /**
+     * @Gedmo\SortableGroup
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="questions", cascade={"all"})
      * @ORM\OrderBy({"rank" = "asc"})
      */
@@ -119,6 +120,16 @@ class Question
     public function getRank()
     {
         return $this->rank;
+    }
+
+    /**
+     * Check whether this question has the same rank as another question
+     *
+     * @return bool
+     */
+    public function hasSameRankAs(Question $other)
+    {
+        return $this->rank === $other->rank;
     }
 
     /**

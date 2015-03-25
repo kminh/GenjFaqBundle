@@ -20,8 +20,8 @@ class QuestionAdmin extends Admin
 
     protected $datagridValues = array(
         '_page' => 1,
-        '_sort_by' => 'issueDate',
-        '_sort_order' => 'Desc'
+        '_sort_by' => 'rank',
+        '_sort_order' => 'Asc'
     );
 
     /**
