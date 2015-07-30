@@ -3,6 +3,9 @@
 namespace Genj\FaqBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
+
+use Gedmo\Translatable\Query\TreeWalker\TranslationWalker;
 
 /**
  * Class QuestionRepository
@@ -18,15 +21,57 @@ class QuestionRepository extends EntityRepository
      */
     public function retrieveFirstByCategorySlug($categorySlug)
     {
-        $query = $this->createQueryBuilder('q')
-            ->join('q.category', 'c')
+        $qb = $this->getQueryBuilder()
             ->where('c.slug = :categorySlug')
-            ->orderBy('q.rank', 'ASC')
             ->setMaxResults(1)
-            ->getQuery();
+        ;
 
-        $query->setParameter('categorySlug', $categorySlug);
+        $qb->setParameter('categorySlug', $categorySlug);
+
+        $query = $qb->getQuery();
 
         return $query->getOneOrNullResult();
+    }
+
+    public function retrieveActiveByCategorySlug($categorySlug)
+    {
+        $qb = $this->getQueryBuilder()
+            ->where('c.slug = :categorySlug')
+            ->andWhere('c.isActive = :isActive')
+        ;
+
+        $qb->setParameter('categorySlug', $categorySlug);
+        $qb->setParameter('isActive', true);
+
+        $query = $qb->getQuery();
+        /* $query->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, TranslationWalker::class); */
+
+        return $query->getResult();
+    }
+
+    public function retrieveActive()
+    {
+        $qb = $this->getQueryBuilder()
+            ->andWhere('c.isActive = :isActive')
+        ;
+
+        $qb->setParameter('isActive', true);
+
+        $query = $qb->getQuery();
+        /* $query->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, TranslationWalker::class); */
+
+        return $query->getResult();
+    }
+
+    protected function getQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder('q')
+            ->addSelect('c')
+            ->join('q.category', 'c')
+            ->orderBy('c.rank', 'ASC')
+            ->addOrderBy('q.rank', 'ASC')
+        ;
+
+        return $qb;
     }
 }

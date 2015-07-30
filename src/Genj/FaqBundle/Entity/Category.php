@@ -32,11 +32,13 @@ class Category
     protected $questions;
 
     /**
+     * @Gedmo\Translatable
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     protected $headline;
 
     /**
+     * @Gedmo\Translatable
      * @ORM\Column(type="text", nullable=true)
      */
     protected $body;
@@ -69,6 +71,11 @@ class Category
      * @ORM\Column(type="string", length=50, nullable=false)
      */
     protected $slug;
+
+    /**
+     * @Gedmo\Locale
+     */
+    protected $locale;
 
     /**
      * Get id
@@ -324,5 +331,15 @@ class Category
         return array(
             'categorySlug' => $this->getSlug()
         );
+    }
+
+    /**
+     * Set locale
+     *
+     * @param string $locale
+     */
+    public function setTranslatableLocale($locale)
+    {
+        $this->locale = $locale;
     }
 }

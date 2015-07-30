@@ -4,6 +4,9 @@ namespace Genj\FaqBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use Genj\FaqBundle\Entity\Category;
+use Genj\FaqBundle\Entity\Question;
+
 /**
  * Class FaqController
  *
@@ -72,10 +75,6 @@ class FaqController extends Controller
         } else {
             $categories = $this->getCategoryRepository()->retrieveActive();
         }
-
-        /* if (!$categories) { */
-        /*     throw $this->createNotFoundException('Faq category not found'); */
-        /* } */
 
         return $this->render(
             'GenjFaqBundle:Faq:index_without_collapse.html.twig',

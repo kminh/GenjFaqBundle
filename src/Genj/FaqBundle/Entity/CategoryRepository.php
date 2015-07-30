@@ -3,6 +3,9 @@
 namespace Genj\FaqBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
+
+use Gedmo\Translatable\Query\TreeWalker\TranslationWalker;
 
 /**
  * Class CategoryRepository
@@ -17,11 +20,14 @@ class CategoryRepository extends EntityRepository
     public function retrieveActive()
     {
         $query = $this->createQueryBuilder('c')
+            ->addSelect('q')
+            ->innerJoin('c.questions', 'q')
             ->where('c.isActive = :isActive')
             ->orderBy('c.rank', 'ASC')
             ->getQuery();
 
         $query->setParameter('isActive', true);
+        /* $query->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, TranslationWalker::class); */
 
         return $query->execute();
     }
@@ -34,6 +40,7 @@ class CategoryRepository extends EntityRepository
     public function retrieveActiveBySlug($slug)
     {
         $query = $this->createQueryBuilder('c')
+            ->innerJoin('c.questions', 'q')
             ->where('c.isActive = :isActive')
             ->andWhere('c.slug = :slug')
             ->orderBy('c.rank', 'ASC')
@@ -41,6 +48,7 @@ class CategoryRepository extends EntityRepository
 
         $query->setParameter('isActive', true);
         $query->setParameter('slug', $slug);
+        /* $query->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, TranslationWalker::class); */
 
         return $query->execute();
     }
@@ -57,6 +65,7 @@ class CategoryRepository extends EntityRepository
             ->getQuery();
 
         $query->setParameter('isActive', true);
+        /* $query->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, TranslationWalker::class); */
 
         return $query->getOneOrNullResult();
     }
